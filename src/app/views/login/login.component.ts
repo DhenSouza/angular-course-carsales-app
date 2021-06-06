@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestLogin } from 'src/app/resources/models/RequestLogin';
+import { ResponseLogin } from 'src/app/resources/models/ResponseLogin';
+import { LoginService } from 'src/app/resources/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -9,14 +11,21 @@ import { RequestLogin } from 'src/app/resources/models/RequestLogin';
 export class LoginComponent implements OnInit {
   requestLogin: RequestLogin = new RequestLogin();
 
-  constructor() { }
+  constructor(
+    private loginService: LoginService
+  ) { }
 
   ngOnInit() {
     this.requestLogin = new RequestLogin();
     }
 
     public doLogin(): void {
-      console.log(this.requestLogin)
+      this.loginService.doLogin(this.requestLogin).subscribe((data) => {
+        console.log(data);
+      },
+      error => {
+        console.error(401, error);
+      })
     }
   }
 
